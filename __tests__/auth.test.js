@@ -45,4 +45,18 @@ describe('app routes', () => {
         });
       });
   });
+
+  it('fails to login a user with bad password', async() => {
+    await User.create({ email: 'wootie@birblife.com', password: 'tootie' });
+
+    return request(app)
+      .post('/api/v1/auth/login')
+      .send({ email: 'wootie@birblife.com', password: 'ohnoowrongpassword' })
+      .then(res => {
+        expect(res.body).toEqual({
+          message: 'Invalid Email/Password',
+          status: 401
+        });
+      });
+  });
 });
