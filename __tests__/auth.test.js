@@ -31,4 +31,18 @@ describe('app routes', () => {
         });
       });
   });
+
+  it('can login a user', async() => {
+    const user = await User.create({ email: 'wootie@birblife.com', password: 'tootie' });
+    return request(app)
+      .post('/api/v1/auth/login')
+      .send({ email: 'wootie@birblife.com', password: 'tootie' })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: user.id,
+          email: 'wootie@birblife.com',
+          __v: 0
+        });
+      });
+  });
 });
